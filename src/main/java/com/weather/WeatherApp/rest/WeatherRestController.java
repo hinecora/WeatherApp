@@ -31,9 +31,7 @@ public class WeatherRestController {
     }
 
     private String temp = doc.getElementsByClass("weather__temp").text();
-    private String desc = doc.getElementsByClass("weather__icon weather__icon_ovc").first().attr("title");
-
-
+    private String desc = doc.getElementsByClass("weather__icon").first().attr("title");
 
 
     @GetMapping("")
