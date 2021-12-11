@@ -31,6 +31,7 @@ public class WeatherRestController {
     }
 
     private String temp = doc.getElementsByClass("weather__temp").text();
+    private String desc = doc.getElementsByClass("weather__icon weather__icon_ovc").first().attr("title");
 
 
 
@@ -39,21 +40,26 @@ public class WeatherRestController {
     public String weather() throws IOException {
 
         if (weatherRepository.findByDateNotNull() == null) {
+
             String weather = create();
-            return weather;
+            return "Сегодня : " + weather + ", " + desc;
+
         } else {
             if (weatherRepository.findByDate(date).getDate().equals(date)) {
+
                 if (!weatherRepository.findByDate(date).getValue().equals(temp)) {
+
                     weatherRepository.findByDate(date).setValue(temp);
-                    return weatherRepository.findByDate(date).getValue();
+                    return "Сегодня : " + weatherRepository.findByDate(date).getValue() + ", " + desc;
+
                 }
 
-                return weatherRepository.findByDate(date).getValue();
+                return "Сегодня : " + weatherRepository.findByDate(date).getValue() + ", " + desc;
 
             } else {
 
                 String weather = create();
-                return weather;
+                return "Сегодня : " + weather + ", " + desc;
 
             }
 
