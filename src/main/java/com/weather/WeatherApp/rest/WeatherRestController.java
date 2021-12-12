@@ -40,6 +40,7 @@ public class WeatherRestController {
         if (weatherRepository.findByDate(date) == null) {
 
             String weather = create();
+
             return "Сегодня : " + weather + ", " + desc;
 
         }
@@ -49,6 +50,9 @@ public class WeatherRestController {
             if (!weatherRepository.findByDate(date).getValue().equals(temp)) {
 
                 weatherRepository.findByDate(date).setValue(temp);
+
+                weatherRepository.save(weatherRepository.findByDate(date));
+
                 return "Сегодня : " + weatherRepository.findByDate(date).getValue() + ", " + desc;
 
             }
@@ -58,6 +62,7 @@ public class WeatherRestController {
         } else {
 
             String weather = create();
+
             return "Сегодня : " + weather + ", " + desc;
 
         }
