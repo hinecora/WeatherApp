@@ -37,37 +37,28 @@ public class WeatherRestController {
     @GetMapping("")
     public String weather() throws IOException {
 
-        if (weatherRepository.findByDateNotNull() == null) {
+        if (weatherRepository.findByDate(date) == null) {
 
             String weather = create();
             return "Сегодня : " + weather + ", " + desc;
 
-        } else {
+        }
 
-            if (weatherRepository.findByDate(date) == null) {
+        if (weatherRepository.findByDate(date).getDate().equals(date)) {
 
-                String weather = create();
-                return "Сегодня : " + weather + ", " + desc;
+            if (!weatherRepository.findByDate(date).getValue().equals(temp)) {
 
-            }
-
-            if (weatherRepository.findByDate(date).getDate().equals(date)) {
-
-                if (!weatherRepository.findByDate(date).getValue().equals(temp)) {
-
-                    weatherRepository.findByDate(date).setValue(temp);
-                    return "Сегодня : " + weatherRepository.findByDate(date).getValue() + ", " + desc;
-
-                }
-
+                weatherRepository.findByDate(date).setValue(temp);
                 return "Сегодня : " + weatherRepository.findByDate(date).getValue() + ", " + desc;
 
-            } else {
-
-                String weather = create();
-                return "Сегодня : " + weather + ", " + desc;
-
             }
+
+            return "Сегодня : " + weatherRepository.findByDate(date).getValue() + ", " + desc;
+
+        } else {
+
+            String weather = create();
+            return "Сегодня : " + weather + ", " + desc;
 
         }
 

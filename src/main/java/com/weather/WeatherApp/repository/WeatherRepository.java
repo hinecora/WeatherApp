@@ -9,6 +9,4 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
 
     Weather findByDate(LocalDate date);
 
-    Weather findByDateNotNull();
-
 }
