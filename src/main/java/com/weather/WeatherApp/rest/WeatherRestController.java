@@ -19,27 +19,17 @@ public class WeatherRestController {
     @Autowired
     private WeatherRepository weatherRepository;
 
-    private LocalDate date = LocalDate.now();
-    private Document doc;
-
-    {
-        try {
-            doc = Jsoup.connect("http://yandex.ru/").get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String temp = doc.getElementsByClass("weather__temp").text();
-    private String desc = doc.getElementsByClass("weather__icon").first().attr("title");
-
-
     @GetMapping("")
     public String weather() throws IOException {
 
+        LocalDate date = LocalDate.now();
+        Document doc = Jsoup.connect("http://yandex.ru/").get();
+        String temp = doc.getElementsByClass("weather__temp").text();
+        String desc = doc.getElementsByClass("weather__icon").first().attr("title");
+
         if (weatherRepository.findByDate(date) == null) {
 
-            String weather = create();
+            String weather = create(date, temp);
 
             return "Сегодня : " + weather + ", " + desc;
 
@@ -61,7 +51,7 @@ public class WeatherRestController {
 
         } else {
 
-            String weather = create();
+            String weather = create(date, temp);
 
             return "Сегодня : " + weather + ", " + desc;
 
@@ -69,7 +59,7 @@ public class WeatherRestController {
 
     }
 
-    public String create() throws IOException {
+    public String create(LocalDate date, String temp) {
         Weather weather = new Weather();
         weather.setValue(temp);
         weather.setDate(date);
