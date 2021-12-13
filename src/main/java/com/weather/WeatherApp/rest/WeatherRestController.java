@@ -27,7 +27,7 @@ public class WeatherRestController {
         String temp = doc.getElementsByClass("weather__temp").text();
         String desc = doc.getElementsByClass("weather__icon").first().attr("title");
 
-        if (weatherRepository.findByDate(date) == null) {
+        if (weatherRepository.findByDate(date) == null) { // the table has no records
 
             String weather = create(date, temp);
 
@@ -35,9 +35,9 @@ public class WeatherRestController {
 
         }
 
-        if (weatherRepository.findByDate(date).getDate().equals(date)) {
+        if (weatherRepository.findByDate(date).getDate().equals(date)) { // the table contains a record with today's date
 
-            if (!weatherRepository.findByDate(date).getValue().equals(temp)) {
+            if (!weatherRepository.findByDate(date).getValue().equals(temp)) { // check the current temperature value
 
                 weatherRepository.findByDate(date).setValue(temp);
 
@@ -49,7 +49,7 @@ public class WeatherRestController {
 
             return "Сегодня : " + weatherRepository.findByDate(date).getValue() + ", " + desc;
 
-        } else {
+        } else { // the table does not contain a record with today's date
 
             String weather = create(date, temp);
 
